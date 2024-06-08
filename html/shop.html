@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="../css/all.min.css">
+    <link rel="stylesheet" href="../css/shop.css">
+    <title>shop</title>
+</head>
+<body>
+    <header class="container flex">
+        <div class="logo">COMPUTER STORE</div>
+        <div class="account-info flex">
+            <div class="user-info">
+                <span class="user-icon"><i class="fa-solid fa-user"></i></span>
+                <span class="user-text"><a href=""></a>Create a new account</span>
+                <button class="btn register-btn">Register</button>
+                <div class="register">
+                    <!-- Username input -->
+                    <div class="register-name">
+                        <label for="username">Username :</label>
+                        <input type="text" id="username">
+                    </div>
+                    <!-- Password input -->
+                    <div class="register-password">
+                        <label for="userPassword">Password :</label>
+                        <input type="password" id="userPassword">
+                    </div>
+                    <input class="btn submit" type="submit" value="Create">
+                </div>
+            </div>
+
+            <div class="user-cart">
+                <span class="cart-icon">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                </span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Cart bar -->
+        <div class="cart">
+            <span class="delete"><i class="fa-light fa-x"></i></span>
+            <div class="cart-head">
+                <h3>My Cart</h3>
+                <hr>
+            </div>
+            <div class="cart-body">
+            </div>
+            <hr>
+            <div class="cart-footer">
+                <h4>Total Price : </h4>
+                <span id="total-price">00 $</span>
+                
+            </div> 
+            <div class="empty">
+                <h2>Your Cart Is Empty</h2>
+                <img src="../Images/emptyCart.jpg" alt="">
+            </div>
+        </div>
+        <div class="cart-bg"></div>
+    <main>
+        <!-- Filter bar -->
+        <div class="filter">
+            <span class="delete" id="filter-delete"><i class="fa-light fa-x"></i></span>
+            <h2>Filter</h2>
+            <hr>
+            <div class="filter-type">
+                <h3 class="filter-topic">Choose your type</h3>
+                <label for="filterProduct">Product ID:</label>
+                <select id="filterProduct" onchange="updateFilteredProducts()">
+                <option value="none">Show All</option>
+                <!-- Options will be dynamically added here -->
+                </select>
+            </div>
+            <div class="filter-price">
+                <h3 class="filter-topic">specify your price</h3>
+                
+                <div class="min-price">
+                    <label class="priceLabel" for="minPrice">Min Price:</label>
+                    <input type="range" id="minPrice" min="0" step="10" value="0">
+                    <input type="text" class="priceInput" id="minPriceLabel" value="0">
+                </div>
+                
+                <div class="max-price">
+                    <label class="priceLabel" for="maxPrice">Max Price:</label>
+                    <input type="range" id="maxPrice" min="0" step="10" value="1000">
+                    <input type="text" class="priceInput" id="maxPriceLabel" value="1000">
+                </div>
+            </div>
+        </div>
+
+        <!-- body section -->
+        <div class="main-section">
+            <!-- setting the line for adding products and filter menu-->
+            <div class="line">
+                <div class="line-options">
+                    <span class="btn filter-open" id="filter-open">Open Filter</span>
+                    <div class="product-line">
+                        <span class="btn Add-btn">Add products</span> 
+                        <div class="add-productSection">
+                            <span class="delete"><i class="fa-light fa-x"></i></span>
+                            <form id="addProductForm">
+                                        <label >Product ID:</label>
+                                        <select id="productId" required>
+                                            <!-- Options will be dynamically added here -->
+                                        </select>
+
+                                <div class="pro-name">
+                                    <label for="productName">Product Name:</label>
+                                    <input type="text" id="productName" required>
+                                </div>
+                                
+                                <div class="pro-price">
+                                    <label for="productPrice">Product Price:</label>
+                                    <input type="number" id="productPrice" required>
+                                </div>
+                                <div class="pro-des">
+                                    <label for="productDescription">Product Description:</label>
+                                        <textarea name="" id="productDescription"></textarea>
+                                </div>
+                                    
+
+                                    
+                                <button type="button" class="btn" onclick="addProduct()">Add Product</button>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- products section  -->
+            <div class="product-section" id="productSection">
+                <div class="product" id="CPU">
+                    <div class="product-img">
+                        <img src="../Images/CPU_I7.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Intel core i7</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">500$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                    <span class="btn delete-product">DELETE</span>
+                </div>
+                <div class="product" id="GPU">
+                    <div class="product-img">
+                        <img src="../Images/GPU.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">MSI GPU 4070</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">600$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="Rams">
+                    <div class="product-img">
+                        <img src="../Images/RAMs.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Corsair 16gb rams</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">200$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="MotherBoard">
+                    <div class="product-img">
+                        <img src="../Images/MotherBoard.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">MSI B750</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">350$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="PowerSupply">
+                    <div class="product-img">
+                        <img src="../Images/PowerSupply.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Corsair RM750e</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">150$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="CPU">
+                    <div class="product-img">
+                        <img src="../Images/CPU_I7.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Intel core i9</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">800$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="GPU">
+                    <div class="product-img">
+                        <img src="../Images/GPU.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">MSI GPU 4070</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">400$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="Rams">
+                    <div class="product-img">
+                        <img src="../Images/RAMs.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Corsair 16gb rams</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">320$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="MotherBoard">
+                    <div class="product-img">
+                        <img src="../Images/MotherBoard.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">MSI B750</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">450$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="PowerSupply">
+                    <div class="product-img">
+                        <img src="../Images/PowerSupply.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Corsair RM750e</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">220$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="CPU">
+                    <div class="product-img">
+                        <img src="../Images/CPU_I7.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Intel core i7</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">650$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="GPU">
+                    <div class="product-img">
+                        <img src="../Images/GPU.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">MSI GPU 4070</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">375$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="Rams">
+                    <div class="product-img">
+                        <img src="../Images/RAMs.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Corsair 16gb rams</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">280$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="MotherBoard">
+                    <div class="product-img">
+                        <img src="../Images/MotherBoard.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">MSI B750</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">570$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="PowerSupply">
+                    <div class="product-img">
+                        <img src="../Images/PowerSupply.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Corsair RM750e</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">100$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                
+            </div>
+            <div class="pagination">
+                <div class="previous disabled">Previous</div>
+                <ul id="pagination">
+                </ul>
+                <div class="next">next</div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-items">
+            <span>This page was made with :</span>
+            <ul>
+                <li><i class="fa-brands fa-html5 fa-xl" style="color: #e30202;"></i></li>
+                <li><i class="fa-brands fa-css3-alt fa-xl" style="color: blue;"></i></li>
+                <li><i class="fa-brands fa-js fa-xl" style="color: #FFD43B;"></i></li>
+            </ul>
+        </div>
+    </footer>
+</body>
+<script src="../JavaScript/shop.js"></script>
+</html>
