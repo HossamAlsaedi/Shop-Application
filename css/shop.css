@@ -44,6 +44,11 @@ header {
     color: white;
     padding: 10px;
     margin-bottom: 10px;
+    width: 100%;
+}
+
+header .container {
+    position: relative;
 }
 
 .logo {
@@ -262,16 +267,33 @@ header {
     display: flex;
     border-top: 1px solid black;
     align-items: center;
+    justify-content: space-around;
     gap: 10px;
     height: 10%;
 }
 
 .cart-footer h4 {
+    display: inline-block;
 }
 
 .cart-footer input {
     width: 150px;
 }
+
+.pay-btn {
+    padding: 10px 5px;
+    font-size: 18px;
+    font-weight: 700;
+    width: 120px;
+    height: 40px;
+    border-radius: 25px;
+    cursor: pointer;
+}
+
+.pay-btn:hover {
+    background-color: #DDD;
+}
+
 
 .empty {
     height: 80%;
@@ -308,6 +330,26 @@ header {
         height: 100%;
         transform: translateX(50%);
         transition: 0.3s;
+    }
+
+    .product-card {
+        margin-right: 5px;
+        padding: 5px;
+    }
+
+    .cart-body .card-img img {
+        width: 80%;
+        height: 50%;
+    }
+
+    .pay-btn {
+        margin-left: 25px;
+        padding: 9px 5px;
+        font-size: 15px;
+        font-weight: 700;
+        width: 80px;
+        height: 35px;
+        border-radius: 25px;
     }
 }
 

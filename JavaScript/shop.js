@@ -24,27 +24,27 @@ let addProducts = document.querySelector(".add-product");
 let addProductSection = document.querySelector(".add-productSection");
 let addProDelete = document.querySelector(".add-productSection .delete")
 
-//adding products inputs
+//creating products inputs
 let addProId = document.getElementById('productId');
 let addProName = document.getElementById('productName');
 let addProPrice = document.getElementById('productPrice');
 let addProDes = document.getElementById('productDescription');
 
-// to display add products form and hide it
-addProBtn.onclick = () => {
-    addProductSection.classList.toggle("section");
-}
-// clearing form when removing the add new products form
-addProDelete.onclick = () => {
-    addProductSection.classList.remove("section")
-    addProId.style.borderColor = '';
-    addProName.style.borderColor = '';
-    addProPrice.style.borderColor = '';
-    addProDes.style.borderColor = '';
-    resetForm()
-}
+// hiding and displaying the products form
+document.addEventListener('click', (e) => {
+    if (!addProductSection.contains(e.target) && addProductSection.classList.contains('section') || addProDelete.contains(e.target)) {
+        addProductSection.classList.remove("section")
+        addProId.style.borderColor = '';
+        addProName.style.borderColor = '';
+        addProPrice.style.borderColor = '';
+        addProDes.style.borderColor = '';
+        resetForm()
+    } else if (addProBtn.contains(e.target)) {
+        addProductSection.classList.toggle('section');
+    }
+});
 
-// removing requirement borders when the form is closed
+// removing any requirement borders when the form is closed
 function removeProductBorders() {
     addProId.oninput = () => {
         addProId.style.borderColor = '';
@@ -98,6 +98,11 @@ function initializeCartFunctions() {
     const cartBg = document.querySelector('.cart-bg');
     const cartIcon = document.querySelector('.cart-icon');
     const cartDelete = document.querySelector('.delete');
+    const payment = document.querySelector('.pay-btn');
+
+    payment.onclick = () => {
+        console.log("payment clicked");
+    }
 
     if (!cart || !cartHead || !cartBody || !cartFooter || !emptyCart || !cartBg || !cartIcon || !cartDelete) {
         return;
@@ -138,7 +143,6 @@ function initializeCartFunctions() {
     
         const product = addToCartBtn.closest('.product');
         const productId = product.id; // Retrieve the product ID
-        const productDataNumber = product.dataset.number; // Retrieve the data-number attribute
         const productImg = product.querySelector('.product-img img').src;
         const productName = product.querySelector('.product-head').innerText;
         const productDes = product.querySelector('.product-des').innerText;
@@ -155,7 +159,7 @@ function initializeCartFunctions() {
             existingProduct.querySelector('.card-price').innerText = newTotalPrice.toFixed(2);
         } else {
             // Pass the product ID and data-number to the createCartProduct function
-            const cartProduct = createCartProduct(productImg, productName, productDes, productPrice, productId, productDataNumber);
+            const cartProduct = createCartProduct(productImg, productName, productDes, productPrice, productId);
             cartBody.appendChild(cartProduct);
         }
     
@@ -174,11 +178,10 @@ function initializeCartFunctions() {
         }
     }
 
-    function createCartProduct(imgSrc, name, description, price, id, dataNumber) {
+    function createCartProduct(imgSrc, name, description, price, id) {
         const cartProduct = document.createElement('div');
         cartProduct.classList.add('product-card');
         cartProduct.dataset.id = id; // Use dataset.id for the ID attribute
-        cartProduct.dataset.number = dataNumber; // Set the data-number attribute
     
         let quantity = 1;
         let totalPrice = price;
@@ -210,7 +213,6 @@ function initializeCartFunctions() {
         return cartProduct;
     }
     
-
     function appendCartContent() {
         if (!cart.contains(cartHead)) cart.appendChild(cartHead);
         if (!cart.contains(cartBody)) cart.appendChild(cartBody);
@@ -266,10 +268,8 @@ function removeProduct(removeBtn) {
 }
 
 // Function to extract existing products from the DOM and store them in the products array
-
 function extractExistingProducts() {
     const existingProductElements = document.querySelectorAll('.product');
-    let productCounter = 1; // Counter for assigning unique data-number to each product
     existingProductElements.forEach(productElement => {
         const productId = productElement.id;
         const productName = productElement.querySelector('.product-head').textContent;
@@ -283,10 +283,8 @@ function extractExistingProducts() {
             description: productDescription, 
             price: productPrice, 
             image: productImage,
-            dataNumber: productCounter // Assigning unique data-number to each product
         };
         products.push(existingProduct); // Adding existing products to the products array
-        productCounter++; // Increment the counter
     });
 }
 
@@ -300,7 +298,6 @@ function renderProducts() {
     for (let i = startIndex; i < endIndex && i < filteredProducts.length; i++) {
         const product = filteredProducts[i];
         const productElement = createProductElement(product);
-        productElement.dataset.number = i + 1; // Set the data-number attribute
         productSection.appendChild(productElement);
     }
 }
@@ -359,13 +356,10 @@ switch (selectedOption) {
 }
 }
 
-// Function to create HTML element for a product
-
-function createProductElement(product, dataNumber) {
+function createProductElement(product) {
     const productElement = document.createElement('div');
     productElement.className = 'product';
     productElement.id = product.id;
-    productElement.dataset.number = dataNumber; // Set the data-number attribute
 
     productElement.innerHTML = `
         <div class="product-img">
@@ -380,7 +374,6 @@ function createProductElement(product, dataNumber) {
         <span class="btn delete-product">DELETE</span>`;
     return productElement;
 }
-
 
 function addProduct() {
     const productIdInput = document.getElementById('productId');
@@ -625,13 +618,41 @@ function updatePriceRange() {
     })
 }
 
+// display / hide filter section on small-medium screens
+function FilterFunctions() {
+    const filter = document.querySelector('.filter');
+    const filterOpen = document.querySelector('.filter-open');
+    const filterDelete = document.querySelector('#filter-delete');
 
 
+    // Show/hide the filter with animation when the open button is clicked
+    filterOpen.onclick = (e) => {
+        e.stopPropagation(); // Prevent the event from propagating
+        filter.classList.toggle('animation');
+    };
 
-// -----------------------------------------------------------------------------------------------------------------------------------------------------
+    // Hide the filter and remove the animation class when the delete button is clicked
+    filterDelete.onclick = (e) => {
+        e.stopPropagation(); // Prevent the event from propagating
+        filter.classList.remove('animation');
+    };
 
+    // Hide the filter and remove the animation class when clicking outside of it
+    document.addEventListener('click', (e) => {
+        if (!filter.contains(e.target) && filter.classList.contains('animation')) {
+            filter.classList.remove('animation');
+        }
+    });
+
+    // Prevent the filter from closing when clicking inside it
+    filter.addEventListener('click', (e) => {
+        e.stopPropagation();
+    });
+}
+FilterFunctions()
 
 // ---------- pagination ----------
+
 let next = document.querySelector('.next');
 let prev = document.querySelector('.previous');
 
@@ -712,22 +733,4 @@ function highlightCurrentPage() {
 }
 
 // ----------------------------------------------------------------
-
-// filter and cart class properties
-let filter = document.querySelector(".filter");
-let filterOpen = document.querySelector(".filter-open");
-let filterDelete = document.querySelector("#filter-delete");
-
-
-filterOpen.onclick = () => {
-    filter.classList.toggle("animation")
-    
-}
-
-filterDelete.onclick = () => {
-    filter.classList.remove("animation")
-}
-
-// -----------------
-
 

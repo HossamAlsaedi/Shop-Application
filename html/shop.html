@@ -9,7 +9,8 @@
     <title>shop</title>
 </head>
 <body>
-    <header class="container flex">
+    <header>
+        <div class="container flex">
         <div class="logo">COMPUTER STORE</div>
         <div class="account-info flex">
             <div class="user-info">
@@ -37,6 +38,7 @@
                 </span>
             </div>
         </div>
+        </div>
     </header>
 
     <!-- Cart bar -->
@@ -50,8 +52,11 @@
             </div>
             <hr>
             <div class="cart-footer">
-                <h4>Total Price : </h4>
-                <span id="total-price">00 $</span>
+                <div class="price">
+                    <h4>Total Price : </h4>
+                    <span id="total-price">00 $</span>
+                </div>
+                <button class="pay-btn">BYE</button>
                 
             </div> 
             <div class="empty">
