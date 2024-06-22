@@ -9,39 +9,112 @@
     <title>shop</title>
 </head>
 <body>
+<!------------ general item --------------->
+    <div class="bgCover"></div>
+
+<!------------------------ start header -------------------------->
     <header>
         <div class="container flex">
         <div class="logo">COMPUTER STORE</div>
         <div class="account-info flex">
-            <div class="user-info">
+            <div class="user-info flex">
                 <span class="user-icon"><i class="fa-solid fa-user"></i></span>
-                <span class="user-text"><a href=""></a>Create a new account</span>
-                <button class="btn register-btn">Register</button>
-                <div class="register">
-                    <!-- Username input -->
-                    <div class="register-name">
-                        <label for="username">Username :</label>
-                        <input type="text" id="username">
-                    </div>
-                    <!-- Password input -->
-                    <div class="register-password">
-                        <label for="userPassword">Password :</label>
-                        <input type="password" id="userPassword">
-                    </div>
-                    <input class="btn submit" type="submit" value="Create">
+                <div>
+                    <p class="welcome">Welcome</p>
+                    <p class="account-btn">Register / Log in</p>
                 </div>
             </div>
 
-            <div class="user-cart">
-                <span class="cart-icon">
+            <div class="cart-icon">
+                <span class="icon">
                     <i class="fa-solid fa-cart-shopping"></i>
                 </span>
             </div>
         </div>
-        </div>
     </header>
 
-    <!-- Cart bar -->
+
+    <!-------------------- account form -------------------------->
+
+    <div class="account-form">
+        <span class="delete"><i class="fa-light fa-x"></i></span>
+        <div class="container">
+            <div id="usernameDisplay"></div>
+
+            <div id="loginForm">
+                <div class="form-group">
+                    <label for="loginUsername">Username</label>
+                    <input type="text" id="loginUsername">
+                </div>
+                <div class="form-group">
+                    <label for="loginPassword">Password</label>
+                    <input type="password" id="loginPassword">
+                </div>
+                <div class="form-group">
+                    <button id="loginBtn">Log In</button>
+                </div>
+                <div id="registerLink" class="link">Register a new account</div>
+                <div id="forgotPasswordLink" class="link">Forgot Password</div>
+            </div>
+
+            <div id="registerForm" style="display: none;">
+                <div class="form-group">
+                    <label for="registerUsername">Username</label>
+                    <input type="text" id="registerUsername">
+                </div>
+                <div class="form-group">
+                    <label for="registerEmail">Email</label>
+                    <input type="email" id="registerEmail">
+                </div>
+                <div class="form-group">
+                    <label for="registerPassword">Password</label>
+                    <input type="password" id="registerPassword">
+                </div>
+                <div class="form-group">
+                    <button id="registerBtn">Register</button>
+                </div>
+                <div class="link" id="backToLoginFromRegister">Back to Log In</div>
+            </div>
+
+            <div id="forgotPasswordForm" style="display: none;">
+                <div class="form-group">
+                    <label for="forgotPasswordEmail">Email</label>
+                    <input type="email" id="forgotPasswordEmail">
+                </div>
+                <div class="form-group">
+                    <button id="sendResetCodeBtn">Send Reset Code</button>
+                </div>
+                <div class="link" id="backToLoginFromForgot">Back to Log In</div>
+            </div>
+
+            <div id="resetCodeForm" style="display: none;">
+                <div class="form-group">
+                    <label for="resetCode">Reset Code</label>
+                    <input type="text" id="resetCode">
+                </div>
+                <div class="form-group">
+                    <button id="verifyResetCodeBtn">Verify Code</button>
+                </div>
+                <div class="link" id="backToLoginFromReset">Back to Log In</div>
+            </div>
+
+            <div id="newPasswordForm" style="display: none;">
+                <div class="form-group">
+                    <label for="newPassword">New Password</label>
+                    <input type="password" id="newPassword">
+                </div>
+                <div class="form-group">
+                    <button id="resetPasswordBtn">Reset Password</button>
+                </div>
+                <div class="link" id="backToLoginFromNewPassword">Back to Log In</div>
+            </div>
+            
+            <div id="logoutLink" class="link" style="display: none;">Log Out</div>
+            <div id="deleteAccountLink" class="link" style="display: none;">Delete Account</div>
+        </div>        
+    </div>
+
+    <!-------------------- Cart bar -------------------------->
         <div class="cart">
             <span class="delete"><i class="fa-light fa-x"></i></span>
             <div class="cart-head">
@@ -64,7 +137,8 @@
                 <img src="../Images/emptyCart.jpg" alt="">
             </div>
         </div>
-        <div class="cart-bg"></div>
+
+    <!---------------------- start main ----------------------->
     <main>
         <!-- Filter bar -->
         <div class="filter">
@@ -344,6 +418,7 @@
         </div>
     </main>
 
+    <!---------------------- start footer --------------------->
     <footer>
         <div class="footer-items">
             <span>This page was made with :</span>

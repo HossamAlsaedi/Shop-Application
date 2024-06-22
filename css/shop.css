@@ -1,3 +1,6 @@
+
+
+/*---------------------- start general classes ----------------------------*/
 * {
     box-sizing: border-box;
     margin: 0;
@@ -27,6 +30,22 @@ body {
     cursor: pointer;
 }
 
+.icon {
+    display: inline;
+    font-size: 15px;
+    text-align: center;
+    padding: 5px;
+    cursor: pointer;
+    border: 2px solid black;
+    border-radius: 25px;
+}
+
+.icon:hover {
+    color: black;
+    background-color: white;
+}
+
+
 .btn:hover {
     background-color: #eee;
 }
@@ -37,8 +56,23 @@ body {
     transform: translateX(0) !important;
 }
 
+.bgCover {
+    display: none;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    background-color: #000;
+    opacity: 0.5;
+    z-index: 99;
+}
 
-/* Starting header */
+
+
+/*---------------------- end general classes ----------------------------*/
+
+
+/* --------------------------- Start header --------------------------------- */
 header {
     background-color: gray;
     color: white;
@@ -56,98 +90,105 @@ header .container {
     font-size: 25px;
 }
 
+
+/*------------------------------------------ start account form -------------------------------*/
+
 .account-info {
-    
+    gap: 10px;
 }
 
 .user-info {
-    margin: 0 10px;
-    position: relative;
-}
-
-
-/* Creating account */
-.register {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    flex-direction: column;
-    gap: 10px;
-    position: absolute;
-    background-color: lightblue;
-    padding: 5px;
-    color: black;
-    display: none;
-    right: 60px;
-    top: 55px;
-}
-
-.register-btn , .submit {
-    padding: 0 !important;
-}
-
-.register::before {
-    content: "";
-    border: solid 10px;
-    border-color: transparent transparent lightblue transparent ;
-    position: absolute;
-    right: 5px;
-    top: -20px;
-}
-
-.submit {
-    margin: 5px auto;
-    font-size: 15px;
-    border-radius: 5px;
-    padding: 2px;
-}
-
-@media (width < 1100px) {
-    .register  {
-        top: 40px !important;
-        right: 0px !important;
-        z-index: 100;
-    }
-
-    .register-btn {
-        display: none !important;
-    }
-
-    .user-text {
-        display: none;
-        color: red;
-        }
-
-    .user-icon {
-            border: 2px solid black;
-            border-radius: 25px;
-            padding: 5px;
-            font-size: 15px;
-            cursor: pointer;
-        }
-    
-    .user-icon:hover {
-            color: black;
-            background-color: white;
-        }
-}
-
-
-
-/* Start cart */
-.cart-icon {
-    font-size: 15px;
-    text-align: center;
-    padding: 5px;
-    cursor: pointer;
-    border: 2px solid black;
     border-radius: 25px;
-}
-
-.cart-icon:hover {
+    padding: 10px;
+    gap: 10px;
+    transition: 0.3s;
+    cursor: pointer;
+    height: 40px;
+    font-size: 14px;
+    }
+    
+    .user-info:hover {
     color: black;
     background-color: white;
 }
+
+.user-icon {
+    font-size: 20px;
+}
+
+.welcome {
+    font-size: 13px;
+    display: block;
+    opacity: 0.8;
+}
+
+.account-form {
+    display: none;
+    border: black solid 1px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-25% , -50%);
+    z-index: 100;
+    text-align: center;
+    width: 300px;
+    padding: 20px;
+    background-color: white;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.form-group input {
+    width: 100%;
+    padding: 8px;
+    box-sizing: border-box;
+}
+
+.form-group button {
+    width: 100%;
+    padding: 10px;
+    background-color: #007BFF;
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+.form-group button:hover {
+    background-color: #0056b3;
+}
+
+#usernameDisplay {
+    margin-bottom: 20px;
+    font-size: 1.2em;
+    color: #007BFF;
+    text-align: center;
+}
+
+.link {
+    text-align: center;
+    color: #007BFF;
+    cursor: pointer;
+    margin-bottom: 10px;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+
+
+/*------------------------------------------  end account form -----------------------------------*/
+
+/*------------------------------------------  Start cart  ----------------------------------------*/
+
 
 .cart {
     border-left: 1px solid black;
@@ -164,17 +205,6 @@ header .container {
     transition: 0.3s;
 }
 
-
-.cart-bg {
-    display: none;
-    position: fixed;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    background-color: #000;
-    opacity: 0.5;
-    z-index: 99;
-}
 
 .cart-head {
     height: 10%;
@@ -245,7 +275,6 @@ header .container {
     display: flex;
     justify-content: space-between;
 }
-
 
 
 .product-quantity input {
@@ -353,16 +382,16 @@ header .container {
     }
 }
 
+/*-------------------------------- end cart & header ------------------------------------*/
 
-
-/* start the main part */
+/* --------------------------- start body ---------------------------------- */
 
 main {
     display: flex;
     gap: 5px;
 }
 
-/* Start filter */
+/* ------------------------- Start filter form ----------------------- */
 
 .filter {
     width: 400px;
@@ -406,8 +435,10 @@ hr {
     width: 75px;
 }
 
+/*------------------------ end filter form ---------------------------------------*/
 
-/* start line */
+
+/* ---------------------------- start line --------------------------------- */
 
 .line {
     width: calc(100vw - 290px);
@@ -436,18 +467,18 @@ hr {
     height: 450px;
     box-shadow: 2px 2px  0px  4 px rgba(187, 178, 178, 0.363);
     position: absolute;
-    background-color: #eee;
+    background-color: #f7f7f7;
     top: 50px;
     right: -50px;
-    z-index: -10;
+    z-index: -1;
     opacity: 0;
-    transition: 0.3s;
+    transition: 0.2s;
 }
 
 .section {
+    z-index: 101;
     opacity: 1;
     top: calc(50px + 25px);
-    z-index: 10;
 }
 
 #addProductForm {
@@ -542,9 +573,9 @@ hr {
     }
 }
 
+/* ------------------------------ end line ---------------------------------*/
 
-/* start product section */
-
+/*------------------------------- start product section ----------------------------*/
 
 .product-section {
     margin: 10px 20px;
@@ -613,8 +644,9 @@ hr {
     }
 }
 
+/*------------------------- end product section -------------------------*/
 
-/*start pagination*/
+/*------------------------- start pagination ----------------------------*/
 
 
 .pagination {
@@ -663,7 +695,11 @@ hr {
     background-color: #707070;
     color: white;
 }
-/* start footer */
+
+/*------------------------ end pagination ---------------------------------*/
+
+
+/*------------------------ start footer -----------------------------------*/
 
 footer {
     border-top: 1px solid black;
@@ -696,5 +732,4 @@ footer {
     padding: 10px;
 }
 
-
-
+/*------------------------------ end footer ------------------------------*/

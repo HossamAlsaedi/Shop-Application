@@ -1,18 +1,213 @@
 
 
-// register process
 
-let regBtn = document.querySelector(".register-btn");
-let registerBox = document.querySelector(".register");
-let userIcon = document.querySelector(".user-icon");
+const BgCover = document.querySelector('.bgCover');
 
 
-regBtn.onclick = () => {
-    registerBox.classList.toggle("active")
+
+
+// account form
+
+document.getElementById('registerLink').addEventListener('click', showRegisterForm);
+document.getElementById('forgotPasswordLink').addEventListener('click', showForgotPasswordForm);
+document.getElementById('backToLoginFromRegister').addEventListener('click', showLoginForm);
+document.getElementById('backToLoginFromForgot').addEventListener('click', showLoginForm);
+document.getElementById('backToLoginFromReset').addEventListener('click', showLoginForm);
+document.getElementById('backToLoginFromNewPassword').addEventListener('click', showLoginForm);
+document.getElementById('loginBtn').addEventListener('click', login);
+document.getElementById('registerBtn').addEventListener('click', register);
+document.getElementById('sendResetCodeBtn').addEventListener('click', sendResetCode);
+document.getElementById('verifyResetCodeBtn').addEventListener('click', verifyResetCode);
+document.getElementById('resetPasswordBtn').addEventListener('click', resetPassword);
+document.getElementById('logoutLink').addEventListener('click', logout);
+document.getElementById('deleteAccountLink').addEventListener('click', deleteAccount);
+
+function showRegisterForm() {
+    hideAllForms();
+    document.getElementById('registerForm').style.display = 'block';
 }
-userIcon.onclick = () => {
-    registerBox.classList.toggle("active")
+
+function showForgotPasswordForm() {
+    hideAllForms();
+    document.getElementById('forgotPasswordForm').style.display = 'block';
 }
+
+function showResetCodeForm() {
+    hideAllForms();
+    document.getElementById('resetCodeForm').style.display = 'block';
+}
+
+function showNewPasswordForm() {
+    hideAllForms();
+    document.getElementById('newPasswordForm').style.display = 'block';
+}
+
+function showLoginForm() {
+    hideAllForms();
+    document.getElementById('loginForm').style.display = 'block';
+}
+
+function hideAllForms() {
+    document.getElementById('loginForm').style.display = 'none';
+    document.getElementById('registerForm').style.display = 'none';
+    document.getElementById('forgotPasswordForm').style.display = 'none';
+    document.getElementById('resetCodeForm').style.display = 'none';
+    document.getElementById('newPasswordForm').style.display = 'none';
+}
+
+function register() {
+    const username = document.getElementById('registerUsername').value;
+    const email = document.getElementById('registerEmail').value;
+    const password = document.getElementById('registerPassword').value;
+
+    if (username && email && password) {
+        if (localStorage.getItem(username)) {
+            alert('Username is already taken');
+            return;
+        }
+        for (let i = 0; i < localStorage.length; i++) {
+            const key = localStorage.key(i);
+            const user = JSON.parse(localStorage.getItem(key));
+            if (user.email === email) {
+                alert('Email is already registered');
+                return;
+            }
+        }
+        const user = { username, email, password };
+        localStorage.setItem(username, JSON.stringify(user));
+        alert('User registered successfully');
+        document.getElementById('registerUsername').value = '';
+        document.getElementById('registerEmail').value = '';
+        document.getElementById('registerPassword').value = '';
+        showLoginForm();
+    } else {
+        alert('Please fill all fields');
+    }
+}
+
+function login() {
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+    const storedUser = localStorage.getItem(username);
+
+    if (storedUser) {
+        const user = JSON.parse(storedUser);
+        if (user.password === password) {
+            document.getElementById('usernameDisplay').innerText = `Welcome, ${user.username}`;
+            document.getElementById('loginForm').style.display = 'none';
+            document.getElementById('registerLink').style.display = 'none';
+            document.getElementById('forgotPasswordLink').style.display = 'none';
+            document.getElementById('logoutLink').style.display = 'block';
+            document.getElementById('deleteAccountLink').style.display = 'block';
+        } else {
+            alert('Username or password is incorrect');
+        }
+    } else {
+        alert('Username or password is incorrect');
+    }
+}
+
+function logout() {
+    document.getElementById('usernameDisplay').innerText = '';
+    document.getElementById('loginForm').style.display = 'block';
+    document.getElementById('registerLink').style.display = 'block';
+    document.getElementById('forgotPasswordLink').style.display = 'block';
+    document.getElementById('logoutLink').style.display = 'none';
+    document.getElementById('deleteAccountLink').style.display = 'none';
+    hideAllForms();
+    document.getElementById('loginForm').style.display = 'block';
+}
+
+function deleteAccount() {
+    if (confirm('Are you sure you want to delete your account?')) {
+        const username = document.getElementById('usernameDisplay').innerText.split(', ')[1];
+        localStorage.removeItem(username);
+        alert('Account deleted successfully');
+        logout();
+    }
+}
+
+function sendResetCode() {
+    const email = document.getElementById('forgotPasswordEmail').value;
+    let userFound = false;
+
+    for (let i = 0; i < localStorage.length; i++) {
+        const key = localStorage.key(i);
+        const user = JSON.parse(localStorage.getItem(key));
+        if (user.email === email) {
+            userFound = true;
+            const resetCode = Math.floor(1000 + Math.random() * 9000);
+            localStorage.setItem('resetCode', resetCode);
+            localStorage.setItem('resetUser', key);
+            alert(`Your reset code is: ${resetCode}`);
+            document.getElementById('forgotPasswordEmail').value = '';
+            showResetCodeForm();
+            break;
+        }
+    }
+
+    if (!userFound) {
+        alert('Email not found');
+    }
+}
+
+function verifyResetCode() {
+    const resetCode = document.getElementById('resetCode').value;
+    const storedCode = localStorage.getItem('resetCode');
+
+    if (resetCode === storedCode) {
+        alert('Code verified');
+        document.getElementById('resetCode').value = '';
+        showNewPasswordForm();
+    } else {
+        alert('Invalid code');
+    }
+}
+
+function resetPassword() {
+    const newPassword = document.getElementById('newPassword').value;
+    const username = localStorage.getItem('resetUser');
+    const user = JSON.parse(localStorage.getItem(username));
+
+    if (user) {
+        user.password = newPassword;
+        localStorage.setItem(username, JSON.stringify(user));
+        localStorage.removeItem('resetCode');
+        localStorage.removeItem('resetUser');
+        alert('Password reset successfully');
+        document.getElementById('newPassword').value = '';
+        showLoginForm();
+    } else {
+        alert('An error occurred');
+    }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+    const FormDelete = document.querySelector('.delete');
+    const userInfo = document.querySelector('.user-info');
+    const accForm = document.querySelector('.account-form');
+
+    const toggleFormAndCover = () => {
+        // Get the computed style of the accForm
+        const accFormStyle = window.getComputedStyle(accForm);
+        if (accFormStyle.display === 'none') {
+            accForm.style.display = 'block';
+            BgCover.classList.add("active");
+        } else {
+            accForm.style.display = 'none';
+            BgCover.classList.remove("active");
+        }
+    };
+
+    document.addEventListener('click', e => {
+        if (userInfo.contains(e.target) || FormDelete.contains(e.target)) {
+            toggleFormAndCover();
+        } else if (BgCover.contains(e.target)) {
+            accForm.style.display = 'none';
+            BgCover.classList.remove("active");
+        }
+    });
+});
 
 
 
@@ -32,8 +227,9 @@ let addProDes = document.getElementById('productDescription');
 
 // hiding and displaying the products form
 document.addEventListener('click', (e) => {
-    if (!addProductSection.contains(e.target) && addProductSection.classList.contains('section') || addProDelete.contains(e.target)) {
+    if (!addProductSection.contains(e.target) && addProductSection.classList.contains('section') || addProDelete.contains(e.target) || BgCover.contains(e.target)) {
         addProductSection.classList.remove("section")
+        BgCover.classList.remove("active");
         addProId.style.borderColor = '';
         addProName.style.borderColor = '';
         addProPrice.style.borderColor = '';
@@ -41,6 +237,7 @@ document.addEventListener('click', (e) => {
         resetForm()
     } else if (addProBtn.contains(e.target)) {
         addProductSection.classList.toggle('section');
+        BgCover.classList.add("active");
     }
 });
 
@@ -95,26 +292,25 @@ function initializeCartFunctions() {
     const cartBody = document.querySelector('.cart-body');
     const cartFooter = document.querySelector('.cart-footer');
     const emptyCart = document.querySelector('.empty');
-    const cartBg = document.querySelector('.cart-bg');
     const cartIcon = document.querySelector('.cart-icon');
-    const cartDelete = document.querySelector('.delete');
+    const cartDelete = document.querySelector('.cart .delete');
     const payment = document.querySelector('.pay-btn');
 
     payment.onclick = () => {
         console.log("payment clicked");
     }
 
-    if (!cart || !cartHead || !cartBody || !cartFooter || !emptyCart || !cartBg || !cartIcon || !cartDelete) {
+    if (!cart || !cartHead || !cartBody || !cartFooter || !emptyCart || !BgCover || !cartIcon || !cartDelete) {
         return;
     }
 
     // open/close the cart
     document.addEventListener("click", e => {
-        if (e.target === cartBg || cartDelete.contains(e.target)) {
-            cartBg.classList.remove("active");
+        if (e.target === BgCover || cartDelete.contains(e.target)) {
+            BgCover.classList.remove("active");
             cart.classList.remove("animation");
         } else if (cartIcon.contains(e.target)) {
-            cartBg.classList.add("active");
+            BgCover.classList.add("active");
             cart.classList.add("animation");
         }
     });
