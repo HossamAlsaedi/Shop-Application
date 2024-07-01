@@ -792,6 +792,7 @@ function updateFilteredProducts() {
     });
 
     // Render updated products based on filters
+    currentPage = 1;
     renderProducts();
     renderPagination();
     highlightCurrentPage();
