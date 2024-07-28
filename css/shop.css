@@ -67,6 +67,18 @@ body {
     z-index: 40;
 }
 
+.alert {
+    width: 500px;
+    text-align: center;
+    margin: auto;
+    height: 100px;
+    position: absolute;
+    z-index: 500;
+    background-color: lightgreen;
+    left: 50%;
+    transform: translate(-50%, 20%);
+
+}
 
 
 /*---------------------- end general classes ----------------------------*/
@@ -117,6 +129,7 @@ header .container {
     cursor: pointer;
     height: 40px;
     font-size: 14px;
+    font-weight: bold;
     }
     
     .user-info:hover {
@@ -189,10 +202,22 @@ header .container {
     color: #007BFF;
     cursor: pointer;
     margin-bottom: 10px;
+    border: solid 2px black;
+    padding: 7px;
 }
 
 .link:hover {
-    text-decoration: underline;
+    background-color: #f7f7f7
+}
+
+#deleteAccountLink {
+    background-color: rgba(255, 0, 0, 0.80);
+    color: white;
+    font-weight: bold;
+}
+
+#deleteAccountLink:hover {
+    background-color: rgba(255, 0, 0, 0.95);
 }
 
 @media (width < 560px) {
@@ -335,10 +360,11 @@ header .container {
     height: 40px;
     border-radius: 25px;
     cursor: pointer;
+    background-color: white;
 }
 
 .pay-btn:hover {
-    background-color: #DDD;
+    background-color: #f7f7f7;
 }
 
 

@@ -8,44 +8,61 @@ const BgCover = document.querySelector('.bgCover');
 
 // account form
 
-document.getElementById('registerLink').addEventListener('click', showRegisterForm);
-document.getElementById('forgotPasswordLink').addEventListener('click', showForgotPasswordForm);
-document.getElementById('backToLoginFromRegister').addEventListener('click', showLoginForm);
-document.getElementById('backToLoginFromForgot').addEventListener('click', showLoginForm);
-document.getElementById('backToLoginFromReset').addEventListener('click', showLoginForm);
-document.getElementById('backToLoginFromNewPassword').addEventListener('click', showLoginForm);
-document.getElementById('loginBtn').addEventListener('click', login);
-document.getElementById('registerBtn').addEventListener('click', register);
-document.getElementById('sendResetCodeBtn').addEventListener('click', sendResetCode);
-document.getElementById('verifyResetCodeBtn').addEventListener('click', verifyResetCode);
-document.getElementById('resetPasswordBtn').addEventListener('click', resetPassword);
-document.getElementById('logoutLink').addEventListener('click', logout);
-document.getElementById('deleteAccountLink').addEventListener('click', deleteAccount);
+// Function to add event listeners to elements
+    const addEventListenerToElement = (id, event, handler) => {
+        document.getElementById(id).addEventListener(event, handler);
+    };
 
-function showRegisterForm() {
-    hideAllForms();
-    document.getElementById('registerForm').style.display = 'block';
-}
+    // Function to clear all input fields within a form
+    const clearFormInputs = (formId) => {
+        const form = document.getElementById(formId);
+        form.querySelectorAll('input').forEach(input => {
+            input.value = '';
+        });
+    };
 
-function showForgotPasswordForm() {
-    hideAllForms();
-    document.getElementById('forgotPasswordForm').style.display = 'block';
-}
+    // Event handlers
+    const showRegisterForm = () => {
+        hideAllForms();
+        clearFormInputs('registerForm');
+        document.getElementById('registerForm').style.display = 'block';
+    };
 
-function showResetCodeForm() {
-    hideAllForms();
-    document.getElementById('resetCodeForm').style.display = 'block';
-}
+    const showForgotPasswordForm = () => {
+        hideAllForms();
+        clearFormInputs('forgotPasswordForm');
+        document.getElementById('forgotPasswordForm').style.display = 'block';
+    };
 
-function showNewPasswordForm() {
-    hideAllForms();
-    document.getElementById('newPasswordForm').style.display = 'block';
-}
+    const showLoginForm = () => {
+        hideAllForms();
+        clearFormInputs('loginForm');
+        document.getElementById('loginForm').style.display = 'block';
+    };
 
-function showLoginForm() {
-    hideAllForms();
-    document.getElementById('loginForm').style.display = 'block';
-}
+
+// Add event listeners
+const eventListeners = [
+    { id: 'registerLink', handler: showRegisterForm },
+    { id: 'forgotPasswordLink', handler: showForgotPasswordForm },
+    { id: 'backToLoginFromRegister', handler: showLoginForm },
+    { id: 'backToLoginFromForgot', handler: showLoginForm },
+    { id: 'backToLoginFromReset', handler: showLoginForm },
+    { id: 'backToLoginFromNewPassword', handler: showLoginForm },
+    { id: 'loginBtn', handler: login },
+    { id: 'registerBtn', handler: register },
+    { id: 'sendResetCodeBtn', handler: sendResetCode },
+    { id: 'verifyResetCodeBtn', handler: verifyResetCode },
+    { id: 'resetPasswordBtn', handler: resetPassword },
+    { id: 'logoutLink', handler: logout },
+    { id: 'deleteAccountLink', handler: deleteAccount }
+];
+
+eventListeners.forEach(({ id, handler }) => {
+    addEventListenerToElement(id, 'click', handler);
+});
+
+
 
 function hideAllForms() {
     document.getElementById('loginForm').style.display = 'none';
@@ -85,6 +102,31 @@ function register() {
     }
 }
 
+function rebuildElements() {
+    // Select all product elements
+    const products = document.querySelectorAll('.product');
+    
+    // Iterate over each product
+    products.forEach(product => {
+        // Select the existing delete button
+        const deleteButton = product.querySelector('.delete-product');
+        
+        // Remove the existing delete button if it exists
+        if (deleteButton) {
+            deleteButton.remove();
+        }
+        
+        // Create a new delete button
+        const newDeleteButton = document.createElement('span');
+        newDeleteButton.classList.add('btn', 'delete-product');
+        newDeleteButton.textContent = 'DELETE';
+        
+        // Append the new delete button to the product
+        product.appendChild(newDeleteButton);
+    });
+}
+
+
 function login() {
     const username = document.getElementById('loginUsername').value;
     const password = document.getElementById('loginPassword').value;
@@ -93,12 +135,15 @@ function login() {
     if (storedUser) {
         const user = JSON.parse(storedUser);
         if (user.password === password) {
-            document.getElementById('usernameDisplay').innerText = `Welcome, ${user.username}`;
+            document.getElementById('usernameDisplay').innerText = `Welcome, ${user.username}` 
+            document.querySelector('.account-btn').innerText = `Welcome, ${user.username}`;
             document.getElementById('loginForm').style.display = 'none';
             document.getElementById('registerLink').style.display = 'none';
             document.getElementById('forgotPasswordLink').style.display = 'none';
             document.getElementById('logoutLink').style.display = 'block';
             document.getElementById('deleteAccountLink').style.display = 'block';
+            clearFormInputs('loginForm');
+            rebuildElements()
         } else {
             alert('Username or password is incorrect');
         }
@@ -106,6 +151,15 @@ function login() {
         alert('Username or password is incorrect');
     }
 }
+
+function RemoveElements() {
+    const deleteProduct = document.querySelectorAll('.delete-product');
+    deleteProduct.forEach(element => {
+        element.remove();
+    });
+}
+
+
 
 function logout() {
     document.getElementById('usernameDisplay').innerText = '';
@@ -116,6 +170,8 @@ function logout() {
     document.getElementById('deleteAccountLink').style.display = 'none';
     hideAllForms();
     document.getElementById('loginForm').style.display = 'block';
+    document.querySelector('.account-btn').innerText = 'Register / Log in';
+    RemoveElements()
 }
 
 function deleteAccount() {
@@ -297,7 +353,7 @@ function initializeCartFunctions() {
     const payment = document.querySelector('.pay-btn');
 
     payment.onclick = () => {
-        console.log("payment clicked");
+        alert("payment succeed");
     }
 
     if (!cart || !cartHead || !cartBody || !cartFooter || !emptyCart || !BgCover || !cartIcon || !cartDelete) {
