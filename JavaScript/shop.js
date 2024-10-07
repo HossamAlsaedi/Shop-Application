@@ -3083,7 +3083,7 @@ prev.onclick = () => {
 
 // Function to fetch the currency data from a JSON file
 function fetchCurrencyData() {
-    const currencyFile = 'currencies.json'; 
+    const currencyFile = '../JavaScript/currencies.json'; 
     return fetch(currencyFile)
         .then(response => {
             if (!response.ok) {
