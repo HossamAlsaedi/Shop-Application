@@ -10,112 +10,178 @@
 </head>
 <body>
 <!------------ general items --------------->
+
+
+
     <div class="bgCover"></div>
 
-    <!-- <div class="alert">
-        <h3>test</h3>
-    </div> -->
+    <div class="alert">
+        <p>this is an alert</p>
+    </div>
 
 <!------------------------ start header -------------------------->
     <header>
         <div class="container flex">
-        <div class="logo">COMPUTER STORE</div>
-        <div class="account-info flex">
-            <div class="user-info flex">
-                <span class="user-icon"><i class="fa-solid fa-user"></i></span>
-                <div>
-                    <p class="account-btn">Register / Log in</p>
+            <h1 class="logo">Computer Shop</h1>
+            <div class="account-container flex">        
+                <div class="account-info flex">
+                    <div class="user-info flex">
+                        <span class="user-icon"><i class="fa-solid fa-user"></i></span>
+                        <div>
+                            <p class="account-btn">Register / Log in</p>
+                        </div>
+                    </div>
+            
+                    <div id="accountForm" style="display: none;">
+                        <div>
+                            <span class="delete" id="deleteAccountForm"><i class="fa-light fa-x"></i></span>
+                        </div>
+            
+            
+                        <!----------------->
+                        <div id="loginForm">
+                            <div class="form-group">
+                                <label for="loginUsername">Username</label>
+                                <input type="text" id="loginUsername">
+                            </div>
+                            <div class="form-group">
+                                <label for="loginPassword">Password</label>
+                                <input type="password" id="loginPassword">
+                            </div>
+                            <div class="form-group">
+                                <button id="loginBtn">Log In</button>
+                            </div>
+                            <div id="registerLink" class="link">Register</div>
+                            <div id="forgotPasswordLink" class="link">Forgot Password</div>
+                        </div>
+                        <!----------------->
+                        <div id="registerForm">
+                            <div class="form-group">
+                                <label for="registerUsername">Username</label>
+                                <input type="text" id="registerUsername">
+                                <span class="invalid" id="usernameInvalid">Username is already taken</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="registerEmail">Email</label>
+                                <input type="email" id="registerEmail">
+                                <span class="invalid" id="emailInvalid">Email is already registered</span>
+                            </div>
+                            <div class="form-group">
+                                <label for="registerPassword">Password</label>
+                                <input type="password" id="registerPassword">
+                            </div>
+                            <div class="form-group">
+                                <label for="confirmPassword">Confirm Password</label>
+                                <input type="password" id="confirmPassword">
+                                <span class="invalid" id="passwordMismatch">Passwords do not match</span>
+                            </div>
+                            <div class="form-group">
+                                <button id="registerBtn">Register</button>
+                            </div>
+                            <div class="link" id="backToLoginFromRegister">Back to Log In</div>
+                        </div>
+                        <!----------------->
+                        <div id="forgotPasswordForm">
+                            <div class="form-group">
+                                <label for="forgotPasswordEmail">Email</label>
+                                <input type="email" id="forgotPasswordEmail">
+                            </div>
+                            <div class="form-group">
+                                <button id="sendResetCodeBtn">Send Reset Code</button>
+                            </div>
+                            <div class="link" id="backToLoginFromForgot">Back to Log In</div>
+                        </div>
+                        <!----------------->
+                        <div id="resetCodeForm">
+                            <div class="form-group">
+                                <label for="resetCode">Reset Code</label>
+                                <input type="text" id="resetCode">
+                            </div>
+                            <div class="form-group">
+                                <button id="verifyResetCodeBtn">Verify Code</button>
+                            </div>
+                            <div class="link" id="resendVerifyCode">Resend the code</div>
+                            <div class="link" id="backToLoginFromReset">Back to Log In</div>
+                        </div>
+                        <!----------------->
+                        <div id="newPasswordForm">
+                            <div class="form-group">
+                                <label for="newPassword">New Password</label>
+                                <input type="password" id="newPassword">
+                            </div>
+                            <div class="form-group">
+                                <button id="resetPasswordBtn">Reset Password</button>
+                            </div>
+                            <div class="link" id="backToLoginFromNewPassword">Back to Log In</div>
+                        </div>
+                        <!----------------->
+                        <div id="logoutLink" class="link">Log Out</div>
+                        <div id="deleteAccountLink" class="link">Delete Account</div>
+                        <!----------------->
+                    </div>
+            
+                    <div id="accountUI" style="display: none;">
+                        <div class="iconsContainer">
+                                <ul class="switch">
+                                    <li id="userUIicon" class="this"><i class="fa-solid fa-user"></i></li>
+                                    <li id="userSettingsIcon"><i class="fa-solid fa-gear"></i></li>
+                                    <li id="userLogoutIcon"><i class="fa-solid fa-right-from-bracket"></i></li>
+                                </ul>
+                        </div>
+                        <div class="userForms">
+                            <div class="userHead">
+                                <h1>username</h1>
+                            </div>
+                            <div class="userBody">
+            
+                                <div class="userSettings">
+                                    <div id="changeUserEmail" class="link">Change Email</div>
+            
+                                    <div id="changeUserPassword" class="link">Change Password</div>
+            
+                                    <div id="deleteAccountLink" class="link">Delete Account</div>
+                                </div>
+                                <div class="userSettings">
+                                    <div id="changeUserPasswordForm">
+                                        <div class="form-group">
+                                            <label for="ChangePassword">Password</label>
+                                            <input type="password" id="ChangePassword">
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="confirmChangePassword">Confirm Password</label>
+                                            <input type="password" id="confirmChangePassword">
+                                            <span class="invalid" id="passwordMismatch">Passwords do not match</span>
+                                        </div>
+                                        <div class="form-group">
+                                            <button id="Confirm">Confirm</button>
+                                        </div>
+                                        <div id="backToSettingsForm" class="link">Back to Settings</div>
+                                    </div>
+                                </div>
+            
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
 
-            <div class="cart-icon">
-                <span class="icon">
-                    <i class="fa-solid fa-cart-shopping"></i>
-                </span>
+                <div class="cart-icon">
+                    <span class="cartCalc">0</span>
+                    <span class="icon">
+                        <i class="fa-solid fa-cart-shopping"></i>
+                    </span>
+                </div>
             </div>
         </div>
     </header>
 
+    <div class="time">
+        <h4 class="timer">00:00:00</h4>
+    </div>
+
 
     <!-------------------- account form -------------------------->
 
-    <div class="account-form">
-        <span class="delete"><i class="fa-light fa-x"></i></span>
-        <div class="container">
-            <div id="usernameDisplay"></div>
 
-            <div id="loginForm">
-                <div class="form-group">
-                    <label for="loginUsername">Username</label>
-                    <input type="text" id="loginUsername">
-                </div>
-                <div class="form-group">
-                    <label for="loginPassword">Password</label>
-                    <input type="password" id="loginPassword">
-                </div>
-                <div class="form-group">
-                    <button id="loginBtn">Log In</button>
-                </div>
-                <div id="registerLink" class="link">Register</div>
-                <div id="forgotPasswordLink" class="link">Forgot Password</div>
-            </div>
-
-            <div id="registerForm" style="display: none;">
-                <div class="form-group">
-                    <label for="registerUsername">Username</label>
-                    <input type="text" id="registerUsername">
-                </div>
-                <div class="form-group">
-                    <label for="registerEmail">Email</label>
-                    <input type="email" id="registerEmail">
-                </div>
-                <div class="form-group">
-                    <label for="registerPassword">Password</label>
-                    <input type="password" id="registerPassword">
-                </div>
-                <div class="form-group">
-                    <button id="registerBtn">Register</button>
-                </div>
-                <div class="link" id="backToLoginFromRegister">Back to Log In</div>
-            </div>
-
-            <div id="forgotPasswordForm" style="display: none;">
-                <div class="form-group">
-                    <label for="forgotPasswordEmail">Email</label>
-                    <input type="email" id="forgotPasswordEmail">
-                </div>
-                <div class="form-group">
-                    <button id="sendResetCodeBtn">Send Reset Code</button>
-                </div>
-                <div class="link" id="backToLoginFromForgot">Back to Log In</div>
-            </div>
-
-            <div id="resetCodeForm" style="display: none;">
-                <div class="form-group">
-                    <label for="resetCode">Reset Code</label>
-                    <input type="text" id="resetCode">
-                </div>
-                <div class="form-group">
-                    <button id="verifyResetCodeBtn">Verify Code</button>
-                </div>
-                <div class="link" id="backToLoginFromReset">Back to Log In</div>
-            </div>
-
-            <div id="newPasswordForm" style="display: none;">
-                <div class="form-group">
-                    <label for="newPassword">New Password</label>
-                    <input type="password" id="newPassword">
-                </div>
-                <div class="form-group">
-                    <button id="resetPasswordBtn">Reset Password</button>
-                </div>
-                <div class="link" id="backToLoginFromNewPassword">Back to Log In</div>
-            </div>
-            
-            <div id="logoutLink" class="link" style="display: none;">Log Out</div>
-            <div id="deleteAccountLink" class="link" style="display: none;">Delete Account</div>
-        </div>        
-    </div>
 
     <!-------------------- Cart bar -------------------------->
         <div class="cart">
@@ -161,13 +227,13 @@
                 
                 <div class="min-price">
                     <label class="priceLabel" for="minPrice">Min Price:</label>
-                    <input type="range" id="minPrice" min="0" step="10" value="0">
+                    <input type="range" id="minPrice" min="0" value="0">
                     <input type="text" class="priceInput" id="minPriceLabel" value="0">
                 </div>
                 
                 <div class="max-price">
                     <label class="priceLabel" for="maxPrice">Max Price:</label>
-                    <input type="range" id="maxPrice" min="0" step="10" value="1000">
+                    <input type="range" id="maxPrice" min="0" value="1000">
                     <input type="text" class="priceInput" id="maxPriceLabel" value="1000">
                 </div>
             </div>
@@ -183,32 +249,45 @@
                         <span class="btn Add-btn">Add products</span> 
                         <div class="add-productSection">
                             <span class="delete"><i class="fa-light fa-x"></i></span>
+                            <!-- Add this button to your HTML file -->
                             <form id="addProductForm">
                                         <label >Product ID:</label>
-                                        <select id="productId" required>
+                                        <select id="productId">
                                             <!-- Options will be dynamically added here -->
                                         </select>
+                                        <span id="newIdText">want to add a new ID?
+                                            <span id="newIdButton">New ID</span>
+                                        </span>
+
+                                        <!-- New Elements for Custom ID -->
+                                        <div id="customIdContainer" style="display: none;">
+                                            <input type="text" id="customProductId" placeholder="Enter New Product ID" maxlength="12">
+                                            <input type="file" id="customImageUpload" accept="image/*">
+                                            <span id="backToFormButton">Back</span>
+                                        </div>
 
                                 <div class="pro-name">
                                     <label for="productName">Product Name:</label>
-                                    <input type="text" id="productName" required>
+                                    <input type="text" id="productName" maxlength="18">
                                 </div>
                                 
                                 <div class="pro-price">
                                     <label for="productPrice">Product Price:</label>
-                                    <input type="number" id="productPrice" required>
+                                    <input type="text" id="productPrice" maxlength="6"> 
                                 </div>
                                 <div class="pro-des">
                                     <label for="productDescription">Product Description:</label>
-                                        <textarea name="" id="productDescription"></textarea>
+                                        <textarea name="" id="productDescription" maxlength="150"></textarea>
                                 </div>
                                     
 
                                     
-                                <button type="button" class="btn" onclick="addProduct()">Add Product</button>
+                                <button type="button" class="btn" style = "margin-bottom: 20px;" onclick="addProduct()">Add Product</button>
                             </form>
                         </div>
                     </div>
+                    <span class="btn reset-btn" style="display: none;">reset products</span> 
+
                 </div>
             </div>
 
@@ -410,19 +489,249 @@
                         <button class="btn addToCartBtn">Add to the cart</button>
                     </div>
                 </div>
-                
+                <div class="product" id="CPU">
+                    <div class="product-img">
+                        <img src="../Images/CPU_I7.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Intel core i7</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">650$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="GPU">
+                    <div class="product-img">
+                        <img src="../Images/GPU.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">MSI GPU 4070</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">375$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="Rams">
+                    <div class="product-img">
+                        <img src="../Images/RAMs.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Corsair 16gb rams</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">280$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="MotherBoard">
+                    <div class="product-img">
+                        <img src="../Images/MotherBoard.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">MSI B750</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">570$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="PowerSupply">
+                    <div class="product-img">
+                        <img src="../Images/PowerSupply.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Corsair RM750e</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">100$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="CPU">
+                    <div class="product-img">
+                        <img src="../Images/CPU_I7.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Intel core i7</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">650$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="GPU">
+                    <div class="product-img">
+                        <img src="../Images/GPU.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">MSI GPU 4070</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">375$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="Rams">
+                    <div class="product-img">
+                        <img src="../Images/RAMs.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Corsair 16gb rams</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">280$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="MotherBoard">
+                    <div class="product-img">
+                        <img src="../Images/MotherBoard.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">MSI B750</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">570$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="PowerSupply">
+                    <div class="product-img">
+                        <img src="../Images/PowerSupply.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Corsair RM750e</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">100$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="CPU">
+                    <div class="product-img">
+                        <img src="../Images/CPU_I7.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Intel core i7</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">650$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="GPU">
+                    <div class="product-img">
+                        <img src="../Images/GPU.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">MSI GPU 4070</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">375$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="Rams">
+                    <div class="product-img">
+                        <img src="../Images/RAMs.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Corsair 16gb rams</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">280$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="MotherBoard">
+                    <div class="product-img">
+                        <img src="../Images/MotherBoard.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">MSI B750</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">570$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="PowerSupply">
+                    <div class="product-img">
+                        <img src="../Images/PowerSupply.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Corsair RM750e</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">100$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
+                <div class="product" id="Rams">
+                    <div class="product-img">
+                        <img src="../Images/RAMs.jpg" alt="">
+                    </div>
+                    <div class="product-info">
+                        <h4 class="product-head">Corsair 16gb rams</h4>
+                        <p class="product-des">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit. Ducimus, eligendi. Lorem ipsum dolor sit amet.
+                        </p>                   
+                        <span class="product-price">280$</span>
+                        <button class="btn addToCartBtn">Add to the cart</button>
+                    </div>
+                </div>
             </div>
             <div class="pagination">
-                <div class="previous disabled">Previous</div>
+                <div class="previous disabled"><i class="fa-solid fa-arrow-left"></i></div>
                 <ul id="pagination">
                 </ul>
-                <div class="next">next</div>
+                <div class="next"><i class="fa-solid fa-arrow-right"></i></div>
             </div>
         </div>
     </main>
 
     <!---------------------- start footer --------------------->
     <footer>
+        
+        <div class="currency-info">
+            <div class="specificCurrencies">
+                <div class="USD">
+                    Choose <button data-currency="USD" data-rate="1">USD</button> 
+                    <span class="exchangeRate"></span>
+                </div>
+                <div class="SAR">
+                    Choose <button data-currency="SAR" data-rate="3.75">SAR</button> 
+                    <span class="exchangeRate"></span>
+                </div>
+            </div>
+            <h5>OR</h5>
+            <div class="currencies">
+                <label for="currency">Choose a currency:</label>
+                <select id="currency">
+                    <!-- Options will be populated by JavaScript -->
+                </select>
+                <span id="dropdownExchangeRate"></span>
+            </div>
+            
+        </div>
+
         <div class="footer-items">
             <span>This page was made with :</span>
             <ul>
