@@ -1751,8 +1751,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Listen for input changes on the quantity field
     quantityInput.addEventListener('change', updateQuantity);
     
-    // Listen for "step" buttons (up/down arrow clicks or manual input)
-    quantityInput.addEventListener('input', updateQuantity);
+
 
     cartProduct.querySelector('.remove').addEventListener('click', () => {
         handleRemoveButtonClick(cartProduct);
