@@ -1,7 +1,5 @@
 # Shop Site
 
-Welcome to my **Computer shop**! This web application allows users to manage their shopping experience easily. Below are the key features and functionalities of the site.
-
 ## Features
 - **Responsive Web Design**: The site is built using responsive web design principles, ensuring a seamless user experience across various devices and screen sizes.
 - **Add or Remove Products**: Easily manage your product selections by adding or removing items from your cart.
