@@ -322,15 +322,17 @@ function register() {
         }
         // Check for existing accounts in local storage
         const existingAccounts = JSON.parse(localStorage.getItem('account')) || [];
-        const userExists = existingAccounts.some(user => user.username === username.value || user.email === email.value);
+        const userExists = 
+        existingAccounts.some(user => user.username.toLowerCase() === username.value.trim().toLowerCase() || user.email.toLowerCase() === email.value.trim().toLowerCase());
+
 
         if (userExists) {
-            if (existingAccounts.some(user => user.username === username.value)) {
+            if (existingAccounts.some(user => user.username.toLowerCase() === username.value.trim().toLowerCase())) {
                 usernameInvalid.textContent = "Username is already registered";
                 usernameInvalid.style.display = 'block';
                 username.style.border = '1px solid red';
             }
-            if (existingAccounts.some(user => user.email === email.value)) {
+            if (existingAccounts.some(user => user.email.toLowerCase() === email.value.trim().toLowerCase())) {
                 emailInvalid.textContent = "Email is already registered";
                 emailInvalid.style.display = 'block';
                 email.style.border = '1px solid red';
@@ -387,7 +389,7 @@ function validateLogin() {
     const invalidUsernameText = document.getElementById('InvalidLoginUsername');
     const invalidPasswordText = document.getElementById('InvalidLoginPassword');
 
-    const username = loginUsernameInput.value.trim();
+    const username = loginUsernameInput.value.trim().toLowerCase();
     const password = loginPasswordInput.value.trim();
 
     console.log('Attempting login with:', username, password);
@@ -397,7 +399,7 @@ function validateLogin() {
     console.log('Stored accounts:', storedAccounts);
 
     // Find the user with the matching username
-    const user = storedAccounts.find(user => user.username === username);
+    const user = storedAccounts.find(user => user.username.toLowerCase() === username);
 
     // Clear previous error messages
     invalidUsernameText.style.display = 'none';
@@ -447,7 +449,6 @@ function validateLogin() {
         loginPasswordInput.style.border = ''; // Remove border
         invalidPasswordText.style.display = 'none'; // Hide invalid text
     });
-
 }
 
 //--------------------------------------- Forgot password functions ----------------------------------------------------
@@ -505,9 +506,9 @@ function handleSendResetCode() {
     const emailNotFound = document.getElementById("emailNotFound");
     const existingAccounts = JSON.parse(localStorage.getItem('account')) || [];
 
-    const email = emailInput ? emailInput.value : ''; 
+    const email = emailInput ? emailInput.value.trim().toLowerCase() : ''; 
 
-    const user = existingAccounts.find(user => user.email === email);
+    const user = existingAccounts.find(user => user.email.trim().toLowerCase() === email);
     if (!user) {
         emailNotFound.style.display = 'block';
         emailInput.style.border = "1px solid red"

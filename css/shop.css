@@ -5,6 +5,7 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
+    scroll-behavior: smooth;
 }
 
 body {
@@ -42,6 +43,12 @@ body {
 .icon:hover {
     color: black;
     background-color: white;
+}
+
+a {
+    text-decoration: none;
+    outline: none;
+    color: #000;
 }
 
 
