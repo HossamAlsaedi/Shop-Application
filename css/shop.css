@@ -862,7 +862,7 @@ hr {
 .section {
     z-index: 101;
     opacity: 1;
-    top: 75px;
+    top: 150px;
 }
 
 #addProductForm {
@@ -1034,6 +1034,7 @@ textarea {
     word-break: break-word;
     padding: 5px;
     height: 120px;
+    width: 250px;
 }
 
 

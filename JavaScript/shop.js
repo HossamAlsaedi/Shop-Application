@@ -1,5 +1,7 @@
 
 
+const productsPerPage = 6;  // here you can change the number of products per page
+
 
 const BgCover = document.querySelector('.bgCover');
 
@@ -451,9 +453,9 @@ function validateLogin() {
     });
 }
 
+
 //--------------------------------------- Forgot password functions ----------------------------------------------------
 
-// Function to switch to Forgot Password Form
 function switchToForgotPasswordForm() {
     let accountFormContainer = document.getElementById("accountForm");
     if (!accountFormContainer) {
@@ -1551,7 +1553,6 @@ setInterval(() => {
 // this whole section was made with the help of AI and with a LOT of adjustments
 
 let products = [];
-const productsPerPage = 6; 
 let currentPage = 1;
 let filteredProducts = [];
 
@@ -1568,7 +1569,6 @@ document.addEventListener('DOMContentLoaded', () => {
     updatePriceRange();
     initializeCartFunctions();
 });
-
 
 // ------------------------------------- Start Cart Section --------------------------------------
 
@@ -2032,11 +2032,11 @@ document.addEventListener('DOMContentLoaded', () => {
             syncCartPricesWithCurrency()
         }, 100);
     }
-
-
 // ------------------------------------- End Cart Section --------------------------------------
 
-// ----------------------------- Product Section ---------------------------
+
+
+// ------------------------------------- Product Section ---------------------------------------
 
 // Function to extract existing products from the DOM and store them in the products array
 function processProducts() {
@@ -2047,20 +2047,17 @@ function processProducts() {
         const storedAccounts = JSON.parse(localStorage.getItem('account')) || [];
         const loggedInUserData = JSON.parse(loggedInUser);
         const userIndex = storedAccounts.findIndex(user => user.username === loggedInUserData.username);
-
+        
         if (userIndex !== -1) {
             const user = storedAccounts[userIndex];
             defaultProducts = user.defaultProducts || [];
             addedProducts = user.addedProducts || [];
             deletedProducts = user.deletedProducts || [];
-
-            // Merge default and added products, excluding deleted ones
+            
+            // Merge default and added products, excluding deleted ones without sorting
             userProducts = mergeProductStorages(defaultProducts, addedProducts, deletedProducts);
             
-            // Sort userProducts, if desired (for example, by a timestamp or product number)
-            userProducts.sort((a, b) => b.productNumber - a.productNumber); // Sort by product number descending
-
-            // Save userProducts inside the logged-in user's account
+            // Save userProducts inside the logged-in user's account without sorting
             user.products = userProducts; // Store merged products in user object
             storedAccounts[userIndex] = user; // Update the user account in stored accounts
             localStorage.setItem('account', JSON.stringify(storedAccounts)); // Save updated accounts back to local storage
@@ -2070,27 +2067,38 @@ function processProducts() {
         defaultProducts = JSON.parse(localStorage.getItem('defaultProducts')) || [];
         userProducts = defaultProducts;
     }
-
+    
     if (userProducts.length > 0) {
         products = userProducts; // Set the products array to user products
     } else {
         // Load default products if no specific user products exist
         loadDefaultProducts();
     }
-    toggleResetButton()
+
+    toggleResetButton();
+    
+    // Fix issue where the user's added products don't get displayed after deletion
+    setTimeout(() => {
+        updateFilteredProducts();
+    }, 50);
 }
+
 
 // Merge default and added product arrays, excluding deleted products (only for logged in users)
 function mergeProductStorages(defaultProducts, addedProducts, deletedProducts) {
-    // Combine default and added products
-    const combinedProducts = [...defaultProducts, ...addedProducts];
+    // Reverse the addedProducts to show the newest one first
+    const reversedAddedProducts = [...addedProducts].reverse();
 
-
+    // Combine reversed addedProducts first, then defaultProducts
+    const combinedProducts = [...reversedAddedProducts, ...defaultProducts];
 
     // Filter out products that are in the deleted list
     const mergedProducts = combinedProducts.filter(product => 
         !deletedProducts.some(deleted => deleted.productNumber === product.productNumber)
     );
+
+    console.log("Reversed added products:", reversedAddedProducts);
+    console.log("Merged products (after deletion filtering):", mergedProducts);
 
     return mergedProducts;
 }
@@ -2267,7 +2275,7 @@ function toggleResetButton() {
     } else {
         // For non-logged users, retrieve products from local storage
         currentProducts = products;
-        console.log(currentProducts)
+        console.log(currentProducts);
     }
 
     // Check if there is a difference between current and default products
@@ -2299,17 +2307,9 @@ function areProductsDifferent(defaultProducts, currentProducts) {
         productNumber: product.productNumber
     });
 
-    // Compare product objects in both arrays regardless of order
-    const defaultProductsStrings = defaultProducts.map(productStringify);
-    const currentProductsStrings = currentProducts.map(productStringify);
-
-    // Sort both arrays to ensure the order doesn't affect comparison
-    defaultProductsStrings.sort();
-    currentProductsStrings.sort();
-
-    // Compare sorted arrays
-    for (let i = 0; i < defaultProductsStrings.length; i++) {
-        if (defaultProductsStrings[i] !== currentProductsStrings[i]) {
+    // Compare product objects without sorting
+    for (let i = 0; i < defaultProducts.length; i++) {
+        if (productStringify(defaultProducts[i]) !== productStringify(currentProducts[i])) {
             console.log(`Products differ at index ${i}:`, defaultProducts[i], currentProducts[i]);
             return true; // Products differ if any field is different
         }
@@ -2317,6 +2317,7 @@ function areProductsDifferent(defaultProducts, currentProducts) {
 
     return false; // Return false if no differences are found
 }
+
 
 // Attach reset button event listener
 document.querySelector('.reset-btn').addEventListener('click', resetProducts);
@@ -2329,7 +2330,7 @@ document.querySelector('.reset-btn').addEventListener('click', resetProducts);
 function renderProducts() {
     const productSection = document.getElementById('productSection');
     productSection.innerHTML = '';
-
+    
     const startIndex = (currentPage - 1) * productsPerPage;
     const endIndex = startIndex + productsPerPage;
     
@@ -2339,7 +2340,6 @@ function renderProducts() {
         productSection.appendChild(productElement);
     }
 }
-
 
 // remove the product from object and product section
 document.getElementById('productSection').addEventListener('click', function (event) {
@@ -2361,8 +2361,14 @@ document.getElementById('productSection').addEventListener('click', function (ev
             }
 
             // Save the deleted product to local storage
-            saveDeletedProductToLocalStorage(deletedProduct);
-            
+            manageUserProductStorage(deletedProduct);
+
+            // Check if the user is logged in and clear their addedProducts
+            const loggedInUser = localStorage.getItem('loggedInUser');
+            if (loggedInUser) {
+                manageUserProductStorage(deletedProduct.productNumber); // Call the function to clear added products
+            }
+
             // Re-initialize the other functions
             initializePriceInputs();
             renderProducts();
@@ -2373,8 +2379,8 @@ document.getElementById('productSection').addEventListener('click', function (ev
     }
 });
 
-// Function to save the deleted product to local storage
-function saveDeletedProductToLocalStorage(deletedProduct) {
+// Function to manage added and deleted products in local storage
+function manageUserProductStorage(deletedProduct) {
     const loggedInUser = localStorage.getItem('loggedInUser');
     if (loggedInUser) {
         const storedAccounts = JSON.parse(localStorage.getItem('account')) || [];
@@ -2383,11 +2389,28 @@ function saveDeletedProductToLocalStorage(deletedProduct) {
 
         if (userIndex !== -1) {
             const user = storedAccounts[userIndex];
-            const deletedProducts = user.deletedProducts || [];
-            deletedProducts.push(deletedProduct); // Add the deleted product to the deleted array
-            user.deletedProducts = deletedProducts; // Update the user's deleted products in memory
-            storedAccounts[userIndex] = user; // Update the user data in the array
-            localStorage.setItem('account', JSON.stringify(storedAccounts)); // Save updated accounts to local storage
+            const userProducts = user.addedProducts || []; // Get user's added products
+            const deletedProducts = user.deletedProducts || []; // Get user's deleted products
+
+            // Check if the deleted product is in addedProducts
+            const isInAddedProducts = userProducts.some(product => product.productNumber === deletedProduct.productNumber);
+
+            if (isInAddedProducts) {
+                // If it is in addedProducts, just remove it from there
+                user.addedProducts = userProducts.filter(product => product.productNumber !== deletedProduct.productNumber);
+                console.log(`Removed product ${deletedProduct.productNumber} from addedProducts.`);
+            } else {
+                // If it is not in addedProducts, add to deletedProducts
+                deletedProducts.push(deletedProduct); // Add the deleted product to the deleted array
+                console.log(`Added product ${deletedProduct.productNumber} to deletedProducts.`);
+            }
+
+            // Update the user's data in the storedAccounts
+            storedAccounts[userIndex] = user;
+
+            // Save updated accounts back to local storage
+            localStorage.setItem('account', JSON.stringify(storedAccounts));
+            console.log("User's addedProducts and deletedProducts updated.");
         }
     }
 }
@@ -2399,8 +2422,10 @@ function removeProductFromLocalStorage(productNumber) {
     localStorage.setItem('cart', JSON.stringify(cartProducts));
 }
 
+// ------------------------------------- End Product Section ---------------------------------------
 
-// -------------------------------------------------------- Creating New Products -------------------------
+
+// -------------------------------------------------------- Creating New Products --------------------------
 
 // creating products form 
 let addProBtn = document.querySelector(".Add-btn")
@@ -2410,9 +2435,24 @@ let addProDelete = document.querySelector(".add-productSection .delete")
 
 //creating products inputs
 let addProId = document.getElementById('productId');
+let addCustomId = document.getElementById('customProductId');
 let addProName = document.getElementById('productName');
 let addProPrice = document.getElementById('productPrice');
 let addProDes = document.getElementById('productDescription');
+let addButton = document.querySelector(".add-productSection button");
+
+// Function to handle Enter key press and trigger button click
+function triggerButtonOnEnter(event) {
+    if (event.key === 'Enter') {
+        addButton.click();
+    }
+}
+
+// Add event listeners for 'Enter' key press
+addCustomId.addEventListener('keypress', triggerButtonOnEnter);
+addProName.addEventListener('keypress', triggerButtonOnEnter);
+addProPrice.addEventListener('keypress', triggerButtonOnEnter);
+addProDes.addEventListener('keypress', triggerButtonOnEnter);
 
 // hiding and displaying the products form
 document.addEventListener('click', (e) => {
@@ -2736,9 +2776,14 @@ function addNewProduct(productId, img) {
     renderFilterOptions();
     resetForm();
     renderPagination();
-    addProductSection.classList.remove("active");
+    addProductSection.classList.remove("section");
+    BgCover.classList.remove("active");
     
     showAlert("success", "Product has been added");
+
+    setTimeout(() => {
+        showAlert("", "Please note: To keep your changes on products, creating an account is required.", 3000);
+    }, 2000);
 }
 
 // Function to save the newly added product to local storage under the user's account
@@ -2757,6 +2802,10 @@ function saveProductToUserAccount(newProduct) {
             storedAccounts[userIndex] = user; // Update the user data in the array
             localStorage.setItem('account', JSON.stringify(storedAccounts)); // Save updated accounts to local storage
         }
+    } else {
+        let addedProducts = JSON.parse(localStorage.getItem('addedProducts')) || []; // Initialize array if empty
+        addedProducts.push(newProduct); // Add the new product to the array
+        localStorage.setItem('addedProducts', JSON.stringify(addedProducts)); // Save updated array to local storage
     }
 }
 
@@ -2764,7 +2813,7 @@ function saveProductToUserAccount(newProduct) {
 
 
 
-// -------------------------  Filter Section ---------------------
+// -------------------------------------------  Filter Section -----------------------------------
 
 function renderFilterOptions() {
     const filterProductSelect = document.getElementById('filterProduct');
@@ -2993,7 +3042,7 @@ function FilterFunctions() {
 }
 FilterFunctions()
 
-// ---------------------------- pagination --------------------
+// ------------------------------------------ pagination -------------------------------
 
 let next = document.querySelector('.next');
 let prev = document.querySelector('.previous');
@@ -3079,7 +3128,7 @@ prev.onclick = () => {
     }
 };
 
-// ----------------------- currency ------------------------------
+// -------------------------------------------- currency --------------------------------
 
 // Function to fetch the currency data from a JSON file
 function fetchCurrencyData() {
@@ -3141,33 +3190,138 @@ function convertPrices(selectedOption) {
     const selectedRate = parseFloat(selectedOption.dataset.rate);
     const selectedCurrency = selectedOption.value;
 
-    // Convert prices in the products array
+    // Check for logged-in user
+    const loggedInUser = localStorage.getItem('loggedInUser');
+    let addedProducts = [];
+
+    if (loggedInUser) {
+        const storedAccounts = JSON.parse(localStorage.getItem('account')) || [];
+        const loggedInUserData = JSON.parse(loggedInUser);
+        const userIndex = storedAccounts.findIndex(user => user.username === loggedInUserData.username);
+
+        if (userIndex !== -1) {
+            addedProducts = storedAccounts[userIndex].addedProducts || [];
+        }
+    } else {
+        addedProducts = JSON.parse(localStorage.getItem('addedProducts')) || [];
+    }
+
+    // Convert prices in the products array based on productNumber
     products.forEach(product => {
         const usdPrice = parseFloat(product.price); // Base USD price
+
         if (!isNaN(usdPrice)) {
             let convertedPrice;
 
-            if (selectedCurrency === 'USD') {
-                // If the selected currency is USD, keep the original price
-                product.convertedPrice = `${usdPrice.toFixed(2)} USD`;
+            // Check if the product exists in addedProducts based on productNumber
+            const storedProduct = addedProducts.find(p => p.productNumber === product.productNumber);
+
+            if (storedProduct) {
+                // Check if the stored product's currency matches the selected currency
+                if (storedProduct.currency === selectedOption.textContent) {
+                    // If the currencies match, use the stored converted price
+                    product.convertedPrice = `${storedProduct.convertedPrice}`;
+                } else {
+                    // Continue with the conversion process if currencies don't match
+                    if (selectedCurrency === 'USD') {
+                        // If the selected currency is USD, keep the original price
+                        product.convertedPrice = `${usdPrice.toFixed(2)} USD`;
+                    } else {
+                        // Convert the price to the selected currency
+                        convertedPrice = usdPrice * selectedRate;
+                        product.convertedPrice = `${convertedPrice.toFixed(2)} ${selectedOption.textContent}`;
+                    }
+                }
             } else {
-                // Convert the price to the selected currency
-                const convertedProductPrice = usdPrice * selectedRate;
-                product.convertedPrice = `${convertedProductPrice.toFixed(2)} ${selectedOption.textContent}`;
+                // If the product is not found in storage, continue with the conversion
+                if (selectedCurrency === 'USD') {
+                    product.convertedPrice = `${usdPrice.toFixed(2)} USD`;
+                } else {
+                    convertedPrice = usdPrice * selectedRate;
+                    product.convertedPrice = `${convertedPrice.toFixed(2)} ${selectedOption.textContent}`;
+                }
             }
 
-            // Now update the DOM element for each product based on its ID
-            const productElement = document.getElementById(product.id);
+            // Now update the DOM element for each product based on productNumber
+            const productElement = document.querySelector(`[data-product-number="${product.productNumber}"]`);
             if (productElement) {
                 const priceElement = productElement.querySelector('.product-price');
                 if (priceElement) {
-                    priceElement.textContent = convertedPrice;
+                    priceElement.textContent = product.convertedPrice;
                 }
             }
         } else {
             console.warn('USD Price not set for product:', product);
         }
     });
+
+    // Update the storage with the latest converted prices
+    if (loggedInUser) {
+        // Save the updated prices back to the user's account in local storage
+        const storedAccounts = JSON.parse(localStorage.getItem('account')) || [];
+        const userIndex = storedAccounts.findIndex(user => user.username === JSON.parse(loggedInUser).username);
+
+        if (userIndex !== -1) {
+            storedAccounts[userIndex].addedProducts = addedProducts; // Update products
+            localStorage.setItem('account', JSON.stringify(storedAccounts)); // Save updated account data
+        }
+    } else {
+        // Update local storage for non-logged-in users
+        localStorage.setItem('addedProducts', JSON.stringify(addedProducts));
+    }
+}
+
+window.addEventListener('load', () => {
+    clearAddedProductsAndCheckCart();
+});
+
+function clearAddedProductsAndCheckCart() {
+    // Retrieve addedProducts and cartProducts from local storage
+    const addedProducts = JSON.parse(localStorage.getItem('addedProducts')) || [];
+    const cartProducts = JSON.parse(localStorage.getItem('cartProducts')) || [];
+
+    console.log("Initial addedProducts:", addedProducts);
+    console.log("Initial cartProducts:", cartProducts);
+
+    // If there are no added products, we clear the addedProducts storage
+    if (addedProducts.length === 0) {
+        console.log("No products found in addedProducts to clear.");
+        localStorage.removeItem('addedProducts'); // Ensure it's cleared
+        return;
+    }
+
+    // Filter out products from cartProducts that match productNumber in addedProducts
+    const updatedCartProducts = cartProducts.filter(cartProduct => {
+        const foundInAddedProducts = addedProducts.some(addedProduct => {
+            // Log the values being compared
+            console.log(`Checking cart product number '${cartProduct.number}' against addedProduct productNumber '${addedProduct.productNumber}'`);
+
+            // Ensure both values are compared as numbers
+            const cartNumber = Number(cartProduct.number);
+            const addedProductNumber = Number(addedProduct.productNumber);
+
+            // Check if they are equal
+            return cartNumber === addedProductNumber;
+        });
+        
+        // Log the result of the check
+        console.log(`Product ${cartProduct.number} found in addedProducts: ${foundInAddedProducts}`);
+        return !foundInAddedProducts; // Remove products found in addedProducts
+    });
+
+    console.log("Updated cartProducts after filtering:", updatedCartProducts);
+
+    // Update cartProducts in local storage
+    localStorage.setItem('cartProducts', JSON.stringify(updatedCartProducts));
+
+    // Clear addedProducts from local storage since the process is complete
+    localStorage.removeItem('addedProducts');
+    console.log("addedProducts storage has been cleared.");
+
+    // Check final results
+    console.log("Final cartProducts in storage:", JSON.parse(localStorage.getItem('cartProducts')));
+    loadCartFromLocalStorage()
+    updateCartCalc()
 }
 
 // Currency handling function
@@ -3215,6 +3369,3 @@ function currency() {
         });
     });
 }
-
-
-// ---------------------------------------------------------------
