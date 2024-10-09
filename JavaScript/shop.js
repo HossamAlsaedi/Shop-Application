@@ -2781,9 +2781,15 @@ function addNewProduct(productId, img) {
     
     showAlert("success", "Product has been added");
 
-    setTimeout(() => {
-        showAlert("", "Note: Create an account to keep your changes on products", 3000);
+// Check if there is no logged in user
+    const loggedInUser = localStorage.getItem('loggedInUser');
+
+    if (!loggedInUser) {
+        setTimeout(() => {
+            showAlert("", "Note: Create an account to keep your changes on products", 3000);
     }, 2000);
+}
+
 }
 
 // Function to save the newly added product to local storage under the user's account
