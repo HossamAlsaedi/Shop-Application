@@ -2782,7 +2782,7 @@ function addNewProduct(productId, img) {
     showAlert("success", "Product has been added");
 
     setTimeout(() => {
-        showAlert("", "Note:Create an account to keep your changes on products", 3000);
+        showAlert("", "Note: Create an account to keep your changes on products", 3000);
     }, 2000);
 }
 
