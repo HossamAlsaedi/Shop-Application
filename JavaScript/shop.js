@@ -882,7 +882,7 @@ function rebuildUserUI() {
     addCloseIconToForm();
 }
 
-
+//----------- handle buy button inside the cart ----------------
 function moveToHistory() {
     // Retrieve logged-in user data from local storage
     const loggedInUserData = JSON.parse(localStorage.getItem('loggedInUser')) || {};
@@ -952,7 +952,10 @@ function moveToHistory() {
     // Clear the cart after processing
     showAlert("success", 'Payment successful.');
     clearCart();
+    BgCover.classList.remove("active");
+    cart.classList.remove("animation");
 }
+//--------------------------------------------------------------
 
 // Function to clear the cart
 function clearCart() {
@@ -1810,7 +1813,6 @@ document.addEventListener('DOMContentLoaded', () => {
         console.log('Cart rebuild complete.');
     }
     
-
     function removeProductFromLocalStorage(productId, productNumber) {
         let cartProducts = JSON.parse(localStorage.getItem('cartProducts')) || [];
         cartProducts = cartProducts.filter(product => !(product.id === productId && product.number === productNumber));
