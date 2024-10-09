@@ -1015,6 +1015,7 @@ hr {
 .product-head {
     margin: 10px 0;
     width: 100%;
+    word-break: break-all;
 }
 
 textarea {
