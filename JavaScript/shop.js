@@ -2059,10 +2059,12 @@ function processProducts() {
             // Merge default and added products, excluding deleted ones without sorting
             userProducts = mergeProductStorages(defaultProducts, addedProducts, deletedProducts);
             
-            // Save userProducts inside the logged-in user's account without sorting
+            // Save userProducts inside the logged-in user's account
             user.products = userProducts; // Store merged products in user object
             storedAccounts[userIndex] = user; // Update the user account in stored accounts
-            localStorage.setItem('account', JSON.stringify(storedAccounts)); // Save updated accounts back to local storage
+            
+            // Save the updated accounts back to local storage
+            localStorage.setItem('account', JSON.stringify(storedAccounts)); 
         }
     } else {
         // Load global default products only (no added or deleted storage for non-logged users)
@@ -2070,12 +2072,8 @@ function processProducts() {
         userProducts = defaultProducts;
     }
     
-    if (userProducts.length > 0) {
-        products = userProducts; // Set the products array to user products
-    } else {
-        // Load default products if no specific user products exist
-        loadDefaultProducts();
-    }
+    // Set the products array to user products
+    products = userProducts.length > 0 ? userProducts : loadDefaultProducts();
 
     toggleResetButton();
     
@@ -2142,7 +2140,7 @@ function saveProductsToLocalStorage(type, productList) {
 
         if (userIndex !== -1) {
             const user = storedAccounts[userIndex];
-            user[type] = productList; // Update user's specific product type (default, added, or deleted)
+            user[type] = productList; // Update user's specific product type
             storedAccounts[userIndex] = user; // Update the user account in stored accounts
             localStorage.setItem('account', JSON.stringify(storedAccounts)); // Save updated accounts back to local storage
         }
@@ -2175,13 +2173,12 @@ function deleteProduct(productNumber) {
         // Add product to the deleted list in local storage if user is logged in
         const loggedInUser = localStorage.getItem('loggedInUser');
         if (loggedInUser) {
-            let deletedProducts = [];
             const storedAccounts = JSON.parse(localStorage.getItem('account')) || [];
             const loggedInUserData = JSON.parse(loggedInUser);
             const userIndex = storedAccounts.findIndex(user => user.username === loggedInUserData.username);
 
             if (userIndex !== -1) {
-                deletedProducts = storedAccounts[userIndex].deletedProducts || [];
+                let deletedProducts = storedAccounts[userIndex].deletedProducts || [];
                 deletedProducts.push(deletedProduct);
                 saveProductsToLocalStorage('deletedProducts', deletedProducts);
             }
@@ -2382,6 +2379,7 @@ document.getElementById('productSection').addEventListener('click', function (ev
 });
 
 // Function to manage added and deleted products in local storage
+// Function to manage added and deleted products in local storage
 function manageUserProductStorage(deletedProduct) {
     const loggedInUser = localStorage.getItem('loggedInUser');
     if (loggedInUser) {
@@ -2401,11 +2399,12 @@ function manageUserProductStorage(deletedProduct) {
                 // If it is in addedProducts, just remove it from there
                 user.addedProducts = userProducts.filter(product => product.productNumber !== deletedProduct.productNumber);
                 console.log(`Removed product ${deletedProduct.productNumber} from addedProducts.`);
-            } else {
-                // If it is not in addedProducts, add to deletedProducts
-                deletedProducts.push(deletedProduct); // Add the deleted product to the deleted array
-                console.log(`Added product ${deletedProduct.productNumber} to deletedProducts.`);
-            }
+            } 
+            
+            // Always add the deleted product to deletedProducts
+            deletedProducts.push(deletedProduct); // Add the deleted product to the deleted array
+            user.deletedProducts = deletedProducts; // Update the deletedProducts in the user object
+            console.log(`Added product ${deletedProduct.productNumber} to deletedProducts.`);
 
             // Update the user's data in the storedAccounts
             storedAccounts[userIndex] = user;
@@ -2416,6 +2415,7 @@ function manageUserProductStorage(deletedProduct) {
         }
     }
 }
+
 
 // Function to remove a product from local storage
 function removeProductFromLocalStorage(productNumber) {
