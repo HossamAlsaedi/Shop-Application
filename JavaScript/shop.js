@@ -432,7 +432,7 @@ function validateLogin() {
         }
 
         // Rebuild and show the account UI
-        rebuildAccountUI();
+        rebuildAccountInterface();
 
         // Update the text of the account button to "Welcome, [username]"
         const accountBtn = document.querySelector(".account-btn");
@@ -739,7 +739,7 @@ function clearResetData() {
 
 //------------------------------------- User interface functions ---------------------------------------------------------
 
-function rebuildAccountUI() {
+function rebuildAccountInterface() {
     const accountFormContainer = document.getElementById("accountForm");
 
     if (!accountFormContainer) {
@@ -790,11 +790,11 @@ function rebuildAccountUI() {
     }
     
     // Rebuild User UI after account UI is set
-    rebuildUserUI();
+    rebuildUserInterface();
 }
 
 
-function rebuildUserUI() {
+function rebuildUserInterface() {
     const userForms = document.querySelector(".userForms");
 
     if (!userForms) {
@@ -845,7 +845,7 @@ function rebuildUserUI() {
                 const historyItem = document.createElement("div");
                 historyItem.classList.add("history-item");
                 historyItem.innerHTML = `
-                    <div class="paymentDate">${item.date}</div>
+                    <div class="paymentDate">${item.date} <br> ${item.time}</div>
                     <div class="history-card-name"><h4>${item.name}</h4></div>
                     <div class="history-card-img"><img src="${item.img}" alt="" style="width: 50px; height: 50px;"></div>
                     <div class="history-card-Quantity"><h4>${item.quantity}</h4></div>
@@ -862,7 +862,7 @@ function rebuildUserUI() {
     const logOutIcon = document.getElementById("userLogoutIcon");
 
     if (userUIIcon) {
-        userUIIcon.addEventListener("click", rebuildAccountUI);
+        userUIIcon.addEventListener("click", rebuildAccountInterface);
     } else {
         console.error('User UI Icon not found');
     }
@@ -919,6 +919,13 @@ function moveToHistory() {
         const productQuantity = productCard.querySelector('.quantity-input').value;
         const productPrice = productCard.querySelector('.card-price').textContent;
 
+        const dateOptions = { year: 'numeric', month: '2-digit', day: '2-digit' };
+        const timeOptions = { hour: '2-digit', minute: '2-digit', hour12: true };
+
+        const currentDate = new Date();
+        const formattedDate = currentDate.toLocaleDateString('en-US', dateOptions);  // Date part
+        const formattedTime = currentDate.toLocaleTimeString('en-US', timeOptions);  // Time part
+
         // Create history item
         const historyItem = {
             id: productId,
@@ -926,14 +933,8 @@ function moveToHistory() {
             img: productImg,
             quantity: productQuantity,
             price: productPrice,
-            date: new Date().toLocaleString('en-US', {
-                year: 'numeric',
-                month: '2-digit',
-                day: '2-digit',
-                hour: '2-digit',
-                minute: '2-digit',
-                hour12: true // Use 24-hour format
-            })
+            date: formattedDate,
+            time: formattedTime
         };
 
         // Update local storage with history
@@ -1474,7 +1475,7 @@ document.addEventListener("DOMContentLoaded", function () {
         console.log('User is logged in:', loggedInUser);
 
         // Display the user UI
-        rebuildAccountUI();
+        rebuildAccountInterface();
 
         // Change the text of the account button to "Welcome, [username]"
         if (accountBtn) {
@@ -1511,7 +1512,7 @@ document.querySelector(".user-info").addEventListener("click", function () {
     
     if (loggedInUser) {
         // If a user is logged in, rebuild the user UI
-        rebuildAccountUI();
+        rebuildAccountInterface();
     } else {
         // If no user is logged in, show the login form
         accountFormContainer.style.display = "block";
