@@ -1,17 +1,13 @@
 # Shop Site
 
-## Features
-- **Responsive Web Design**: The site is built using responsive web design principles, ensuring a seamless user experience across various devices and screen sizes.
-- **Add or Remove Products**: Easily manage your product selections by adding or removing items from your cart.
-- **Reset to Default Products**: Use the **Reset** button to return to the original list of products.
-- **Add to Cart**: Move selected products to your cart for purchase.
-  
-  **Note:** You must create an account to complete the payment process.
+## Features:
 
-- **Currency API Integration**: All products, including newly added ones, are synced with the latest currency rates through a currency API.
+- **Responsive Design**: Seamless experience across all devices.
+- **Product Management**: Add, remove, or reset products in the cart.
+- **Cart & Checkout**: Add products to the cart; create an account to complete purchases.
+- **Currency Sync**: Products update with the latest currency rates.
 
-## Account Management
+## Account Management:
 
-- **Create an Account**: Users can create multiple accounts, allowing them to save changes to their product selections. Each account has its own product list and payment history.
-- **Manage Your Account**: Easily change your password and email address at any time.
-- **Forgot Your Password?**: If you forget your password, simply enter your account email, and you will receive an alert with a code. If the code is correct, you'll be redirected to the password change form.
+- **Create and Manage Accounts**: Save product selections, change password/email, and view payment history.
+- **Forgot Password**: Receive a reset code to easily change your password.
