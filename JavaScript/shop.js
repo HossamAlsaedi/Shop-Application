@@ -2049,7 +2049,7 @@ function processProducts() {
     if (loggedInUser) {
         const storedAccounts = JSON.parse(localStorage.getItem('account')) || [];
         const loggedInUserData = JSON.parse(loggedInUser);
-        const userIndex = storedAccounts.findIndex(user => user.username === loggedInUserData.username);
+        var userIndex = storedAccounts.findIndex(user => user.username === loggedInUserData.username);
         
         if (userIndex !== -1) {
             const user = storedAccounts[userIndex];
@@ -2062,6 +2062,7 @@ function processProducts() {
             
             // Save userProducts inside the logged-in user's account
             user.products = userProducts; // Store merged products in user object
+
             storedAccounts[userIndex] = user; // Update the user account in stored accounts
             
             // Save the updated accounts back to local storage
@@ -2367,6 +2368,31 @@ document.getElementById('productSection').addEventListener('click', function (ev
             const loggedInUser = localStorage.getItem('loggedInUser');
             if (loggedInUser) {
                 manageUserProductStorage(deletedProduct.productNumber); // Call the function to clear added products
+                
+                //this code is made to fix the bug where user's products were empty 
+                let userProducts = [], defaultProducts = [], addedProducts = [], deletedProducts = [];
+
+                const storedAccounts = JSON.parse(localStorage.getItem('account')) || [];
+                const loggedInUserData = JSON.parse(loggedInUser);
+                const userIndex = storedAccounts.findIndex(user => user.username === loggedInUserData.username);
+                const user = storedAccounts[userIndex];
+                console.log(user.products)
+
+                defaultProducts = user.defaultProducts || [];
+                addedProducts = user.addedProducts || [];
+                deletedProducts = user.deletedProducts || [];
+                
+                // Merge default and added products, excluding deleted ones without sorting
+                userProducts = mergeProductStorages(defaultProducts, addedProducts, deletedProducts);
+                console.log("test")
+                console.log(userProducts.length)
+                if (userProducts.length == 0) {
+                    console.log("working")
+                    user.deletedProducts = []
+                }
+
+                user.products = userProducts;
+                localStorage.setItem('account', JSON.stringify(storedAccounts)); 
             }
 
             // Re-initialize the other functions
