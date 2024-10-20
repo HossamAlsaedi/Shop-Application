@@ -2368,8 +2368,8 @@ document.getElementById('productSection').addEventListener('click', function (ev
             const loggedInUser = localStorage.getItem('loggedInUser');
             if (loggedInUser) {
                 manageUserProductStorage(deletedProduct.productNumber); // Call the function to clear added products
-                
-                //this code is made to fix the bug where user's products were empty 
+
+                //this code is made to fix the bug where user's products were empty
                 let userProducts = [], defaultProducts = [], addedProducts = [], deletedProducts = [];
 
                 const storedAccounts = JSON.parse(localStorage.getItem('account')) || [];
